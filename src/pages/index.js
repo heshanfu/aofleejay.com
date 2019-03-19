@@ -5,10 +5,11 @@ import { rhythm } from '../utils/typography'
 import Layout from '../components/layout'
 import SEO from '../components/seo'
 
-const IndexPage = ({ data }) => (
-  <Layout>
+const IndexPage = ({ data }) => {
+  return (
+    <Layout>
     <SEO />
-    <h4>{data.allMarkdownRemark.totalCount} Posts</h4>
+    {/* <h4>{data.allMarkdownRemark.totalCount} Posts</h4> */}
     {data.allMarkdownRemark.edges.map(({ node }) => (
       <div key={node.id}>
         <Link
@@ -25,8 +26,27 @@ const IndexPage = ({ data }) => (
         </Link>
       </div>
     ))}
+    {data.allMediumPost.edges.map(({ node }) => (
+      <div key={node.id}>
+        <a
+          href={`https://medium.com/@aofleejay/${node.uniqueSlug}`}
+          rel="noopener noreferrer"
+          target="_blank"
+          style={{ textDecoration: 'none', color: 'inherit' }}
+        >
+          <h3 style={{ marginBottom: rhythm(1 / 4) }}>
+            {node.title}{" "}
+            <span style={{ color: '#bbb' }}>
+              — {node.createdAt}
+            </span>
+          </h3>
+          <p>{node.virtuals.subtitle}</p>
+        </a>
+      </div>
+    ))}
   </Layout>
-)
+  )
+}
 
 export const query = graphql`
   query {
@@ -43,6 +63,26 @@ export const query = graphql`
             slug
           }
           excerpt
+        }
+      }
+    }
+    allMediumPost(sort: { fields: [createdAt], order: DESC }) {
+      edges {
+        node {
+          id
+          title
+          uniqueSlug
+          createdAt(formatString: "DD MMMM, YYYY")
+          type
+          author {
+            username
+          }
+          virtuals {
+            subtitle
+            previewImage {
+              imageId
+            }
+          }
         }
       }
     }

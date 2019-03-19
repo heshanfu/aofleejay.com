@@ -51,7 +51,14 @@ module.exports = {
       options: {
         "excerpt_separator": `<!-- end -->`
       }
-    }
+    },
+    {
+      resolve: `gatsby-source-medium`,
+      options: {
+        username: `@aofleejay`,
+        limit: 200,
+      },
+    },
     // this (optional) plugin enables Progressive Web App + Offline functionality
     // To learn more, visit: https://gatsby.app/offline
     // 'gatsby-plugin-offline',
